@@ -3,9 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import RootProvider from "@/components/providers/root-provider";
-import {ReactNode} from "react";
-import {Toaster} from "@/components/ui/sonner";
-
+import { ReactNode } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,12 +23,11 @@ const RootLayout = ({
       <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
         <body className={inter.className}>
           <RootProvider>{children}</RootProvider>
-          <Toaster position={"top-right"}
-          />
+          <Toaster richColors />
         </body>
       </html>
     </ClerkProvider>
   );
-}
+};
 
-export default RootLayout
+export default RootLayout;
