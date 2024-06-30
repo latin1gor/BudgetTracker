@@ -1,6 +1,7 @@
 import { User } from "@clerk/backend";
 import { Button } from "@/components/ui/button";
 import CreateTransactionDialog from "@/components/dashboard/header/transaction/create-transaction-dialog";
+import Overview from "@/components/dashboard/overview/overview";
 
 interface IProps {
   user: User;
@@ -48,6 +49,7 @@ const Header = ({ user }: IProps) => {
             </div>
           </div>
         </div>
+        <Overview userPreferences={"1"} />
       </div>
     </>
   );

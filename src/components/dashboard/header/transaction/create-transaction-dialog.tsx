@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useCallback } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -37,6 +37,10 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CreateTransaction } from "@/app/(dashboard)/_actions/transactions";
+import { toast } from "sonner";
+import { DateToUTCDate } from "@/lib/helpers";
 
 interface IProps {
   trigger: ReactNode;
@@ -44,6 +48,8 @@ interface IProps {
 }
 
 const CreateTransactionDialog = ({ trigger, type }: IProps) => {
+  const [open, setOpen] = useState(false);
+
   const form = useForm<CreateTransactionType>({
     resolver: zodResolver(CreateTransactionSchema),
     defaultValues: {
@@ -52,15 +58,45 @@ const CreateTransactionDialog = ({ trigger, type }: IProps) => {
     },
   });
 
-  const onChange = useCallback(
+  const handleCategoryChange = useCallback(
     (value: string) => {
       form.setValue("category", value);
     },
     [form],
   );
 
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationFn: CreateTransaction,
+    onSuccess: () => {
+      toast.success("Transaction created successfully", {
+        id: "create-transaction",
+      });
+
+      form.reset({
+        type,
+        description: "",
+        amount: 0,
+        date: new Date(),
+        category: undefined,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["overview"],
+      });
+      setOpen((prevState) => !prevState);
+    },
+  });
+
+  const onSubmit = useCallback((values: CreateTransactionType) => {
+    toast.loading("Creating transaction...", { id: "create-transaction" });
+    mutate({
+      ...values,
+      date: DateToUTCDate(values.date),
+    });
+  }, []);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogTitle>
@@ -75,7 +111,7 @@ const CreateTransactionDialog = ({ trigger, type }: IProps) => {
           transaction
         </DialogTitle>
         <Form {...form}>
-          <form className={"space-y-4"}>
+          <form className={"space-y-4"} onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               name="description"
               control={form.control}
@@ -114,7 +150,10 @@ const CreateTransactionDialog = ({ trigger, type }: IProps) => {
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <FormControl>
-                      <CategoryPicker type={type} onChange={onChange} />
+                      <CategoryPicker
+                        type={type}
+                        onChange={handleCategoryChange}
+                      />
                     </FormControl>
                     <FormDescription>
                       Transaction Description (optional)
@@ -167,28 +206,28 @@ const CreateTransactionDialog = ({ trigger, type }: IProps) => {
             </div>
           </form>
         </Form>
-        {/*<DialogFooter>*/}
-        {/*  <DialogClose asChild>*/}
-        {/*    <Button*/}
-        {/*      className={"w-full"}*/}
-        {/*      type={"button"}*/}
-        {/*      variant={"secondary"}*/}
-        {/*      onClick={() => form.reset()}*/}
-        {/*    >*/}
-        {/*      Cancel*/}
-        {/*    </Button>*/}
-        {/*  </DialogClose>*/}
-        {/*  <Button*/}
-        {/*    className={"w-full"}*/}
-        {/*    type={"button"}*/}
-        {/*    variant={"secondary"}*/}
-        {/*    onClick={form.handleSubmit(onSubmit)}*/}
-        {/*    disabled={isPending}*/}
-        {/*  >*/}
-        {/*    {!isPending && "Create"}*/}
-        {/*    {isPending && <Loader2 className={"animate-spin"} />}*/}
-        {/*  </Button>*/}
-        {/*</DialogFooter>*/}
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button
+              className={"w-full"}
+              type={"button"}
+              variant={"secondary"}
+              onClick={() => form.reset()}
+            >
+              Cancel
+            </Button>
+          </DialogClose>
+          <Button
+            className={"w-full"}
+            type={"button"}
+            variant={"secondary"}
+            onClick={form.handleSubmit(onSubmit)}
+            disabled={isPending}
+          >
+            {!isPending && "Create"}
+            {isPending && <Loader2 className={"animate-spin"} />}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
