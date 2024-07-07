@@ -20,6 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { Category } from "@prisma/client";
 import { Button } from "@/components/ui/button";
+import DeleteCategoryDialog from "@/components/manage/delete-category-dialog";
 
 const ManageContent = () => {
   return (
@@ -135,15 +136,20 @@ const CategoryCard = ({ category }: { category: Category }) => {
         </span>
         <span>{category.name}</span>
       </div>
-      <Button
-        className={
-          "flex w-full border-separate items-center gap-2 rounded-t-none text-muted-foreground hover:bg-red-500/20"
+      <DeleteCategoryDialog
+        trigger={
+          <Button
+            className={
+              "flex w-full border-separate items-center gap-2 rounded-t-none text-muted-foreground hover:bg-red-500/20"
+            }
+            variant={"secondary"}
+          >
+            <Trash className={"h-4 w-4"} />
+            Remove
+          </Button>
         }
-        variant={"secondary"}
-      >
-        <Trash className={"h-4 w-4"} />
-        Remove
-      </Button>
+        category={category}
+      />
     </div>
   );
 };

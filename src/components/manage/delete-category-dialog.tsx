@@ -42,7 +42,7 @@ const DeleteCategoryDialog = ({ category, trigger }: IProps) => {
   });
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild></AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure ?</AlertDialogTitle>
