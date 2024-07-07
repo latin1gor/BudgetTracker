@@ -2,19 +2,19 @@
 "use client";
 
 import React, { type FC, useState, useEffect, useRef } from "react";
-import { Button } from "./button";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
-import { Calendar } from "./calendar";
+import { Button } from "../button";
+import { Popover, PopoverContent, PopoverTrigger } from "../popover";
+import { Calendar } from "../calendar";
 import { DateInput } from "./date-input";
-import { Label } from "./label";
+import { Label } from "../label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./select";
-import { Switch } from "./switch";
+} from "../select";
+import { Switch } from "../switch";
 import {
   ChevronUpIcon,
   ChevronDownIcon,
