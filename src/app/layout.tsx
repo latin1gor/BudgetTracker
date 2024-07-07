@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import RootProvider from "@/components/providers/root-provider";
+import RootProvider from "@/providers/root-provider";
 import { ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
 
