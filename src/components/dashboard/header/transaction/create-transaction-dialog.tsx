@@ -68,7 +68,7 @@ const CreateTransactionDialog = ({ trigger, type }: IProps) => {
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: CreateTransaction,
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success("Transaction created successfully", {
         id: "create-transaction",
       });
@@ -80,7 +80,7 @@ const CreateTransactionDialog = ({ trigger, type }: IProps) => {
         date: new Date(),
         category: undefined,
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ["overview"],
       });
       setOpen((prevState) => !prevState);
