@@ -20,6 +20,7 @@ const Page = async () => {
   if (!userPreferences) {
     redirect("/wizard");
   }
+
   return (
     <div className={"h-full bg-background"}>
       <Header user={user} />
