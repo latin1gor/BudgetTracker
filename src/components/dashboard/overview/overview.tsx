@@ -18,7 +18,7 @@ const Overview = ({ userPreferences }: PreferencesType) => {
     from: startOfMonth(new Date()),
     to: new Date(),
   });
-
+  console.log(userPreferences, "!");
   return (
     <>
       <div

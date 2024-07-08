@@ -50,15 +50,19 @@ const CurrencyComboBox = () => {
     if (userCurrency) setSelectedCurrency(userCurrency);
   }, [userPreferences.data]);
 
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: updateUserCurrency,
-    onSuccess: (data: UserPreferences) => {
+    onSuccess: async (data: UserPreferences) => {
       toast.success(`New ${data.currency} Currency updated successfully`, {
         id: "update-currency",
       });
       setSelectedCurrency(
         currencies.find((c) => c.value === data.currency) || null,
       );
+      await queryClient.invalidateQueries({
+        queryKey: ["overview", "stats", "userPreferences"],
+      });
     },
     onError: () => toast.error("Something went wrong"),
   });
