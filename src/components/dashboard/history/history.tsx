@@ -75,7 +75,7 @@ const History = ({ userPreferences }: PreferencesType) => {
         </CardHeader>
         <CardContent>
           <SkeletonWrapper isLoading={historyDataQuery.isLoading}>
-            {dataAvailable && (
+            {!!dataAvailable && (
               <ResponsiveContainer width={"100%"} height={300}>
                 <BarChart
                   height={300}

@@ -10,7 +10,7 @@ import { DateRange } from "react-day-picker";
 import TransactionsTable from "@/components/transactions/transactions-table";
 import { FromToType } from "@/lib/types";
 
-const Page = () => {
+const TransactionPage = () => {
   const [dateRange, setDateRange] = useState<FromToType>({
     from: startOfMonth(new Date()),
     to: new Date(),
@@ -55,4 +55,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default TransactionPage;
