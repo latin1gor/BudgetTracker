@@ -1,32 +1,28 @@
 "use client";
-import { UserPreferences } from "@prisma/client";
-import { useState } from "react";
-import { differenceInDays, endOfMonth, startOfMonth } from "date-fns";
+
 import { DateRangePicker } from "@/components/ui/custom/date-range-picker";
+import { differenceInDays } from "date-fns";
 import { MAX_DATE_RANGE_DAYS } from "@/lib/constants";
 import { toast } from "sonner";
-import StatsCards from "@/components/dashboard/overview/stats/cards/stats-cards";
-import CategoriesStats from "@/components/dashboard/overview/stats/categories/categories-stats";
 import { PreferencesType } from "@/lib/types";
+import { useState } from "react";
+import { startOfMonth } from "date-fns";
+import { DateRange } from "react-day-picker";
 
-interface DateRange {
-  from: Date;
-  to: Date;
-}
-const Overview = ({ userPreferences }: PreferencesType) => {
+const Page = () => {
   const [dateRange, setDateRange] = useState<DateRange>({
     from: startOfMonth(new Date()),
     to: new Date(),
   });
   return (
-    <>
+    <div className={"bg-card border-b"}>
       <div
         className={
-          "container flex flex-wrap items-end justify-between py-6 gap-2"
+          "container flex flex-wrap items-center justify-between gap-6 py-8"
         }
       >
-        <h2 className={"text-3xl font-bold"}>Overview</h2>
-        <div className={"flex items-center gap-3"}>
+        <div className={"flex w-full justify-between"}>
+          <p className={"text-3xl font-bold"}>Transactions history</p>
           <DateRangePicker
             initialDateFrom={dateRange.from}
             initialDateTo={dateRange.to}
@@ -48,20 +44,8 @@ const Overview = ({ userPreferences }: PreferencesType) => {
           />
         </div>
       </div>
-      <div className={"container flex flex-col w-full gap-2"}>
-        <StatsCards
-          from={dateRange.from}
-          to={dateRange.to}
-          userPreferences={userPreferences}
-        />
-        <CategoriesStats
-          from={dateRange.from}
-          to={dateRange.to}
-          userPreferences={userPreferences}
-        />
-      </div>
-    </>
+    </div>
   );
 };
 
-export default Overview;
+export default Page;
