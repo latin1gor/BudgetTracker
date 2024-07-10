@@ -8,6 +8,7 @@ export interface IStats {
   userPreferences: UserPreferences;
 }
 export type PreferencesType = Omit<IStats, "from" | "to">;
+export type FromToType = Omit<IStats, "userPreferences">;
 export type Timeframe = "month" | "year";
 export interface IPeriod {
   year: number;
