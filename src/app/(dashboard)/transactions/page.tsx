@@ -32,8 +32,6 @@ const TransactionPage = () => {
               showCompare={false}
               onUpdate={(values) => {
                 const { from, to } = values.range;
-                // we update date range only if both dates are set
-
                 if (!from || !to) return;
                 if (differenceInDays(to, from) > MAX_DATE_RANGE_DAYS) {
                   toast.error(
@@ -41,7 +39,6 @@ const TransactionPage = () => {
                   );
                   return;
                 }
-
                 setDateRange({ from, to });
               }}
             />
