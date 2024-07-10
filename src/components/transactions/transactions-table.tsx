@@ -218,8 +218,7 @@ const TransactionsTable = ({ from, to }: FromToType) => {
               handleExportCSV(data);
             }}
           >
-            {" "}
-            <DownloadIcon className={"h-4 w-4 mr-2"} /> Export CSV{" "}
+            <DownloadIcon className={"h-4 w-4 mr-2"} /> Export CSV
           </Button>
           <DataTableViewOptions table={table} />
         </div>
